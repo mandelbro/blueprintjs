@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Blueprint JS Demo</title>
+  <!-- load library js -->
+  <script src="js/jquery.js" type="text/javascript"></script>
+  <script src="js/blueprint.js" type="text/javascript"></script>
+	<!-- load view controller modules -->
+  <script src="js/controllers/headerViewController.js" type="text/javascript"></script>
+  <script src="js/controllers/footerViewController.js" type="text/javascript"></script>
+  <script src="js/controllers/applicationViewController.js" type="text/javascript"></script>
+  <!-- init the view controller blueprint -->
+  <script type="text/javascript">
+  	$(document).ready(initViewController);
+  </script>
+
+</head>
+<body>
+
+	<span id="application" class="js-init"></span>
+	<span id="header" class="js-init"></span>
+	<span id="footer" class="js-init"></span>
+
+</body>
+</html>
