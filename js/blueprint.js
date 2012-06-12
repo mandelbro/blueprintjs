@@ -1,8 +1,17 @@
 
 /**
  * Blueprint View Controller
- * Create an extendable View Controller object used by your custom
- * View controller modules
+ * BlueprintJS allows you to create dynamic view controller modules
+ * which can do anything from create a simple website template without
+ * the need for a server language, to full fledged application feature
+ * modules that are well organized and do a decent enough job of
+ * following the MVC structure.
+ *
+ * This is just something I've been using for a while, I'm looking into
+ * MustacheJS and BackboneJS as they are most likely better options for
+ * what BlueprintJS does...
+ *
+ * On to the good part!
  *
  * Each view controller object that extends this object inherits three
  * important methods: init, build, and theme
@@ -88,9 +97,9 @@ ViewController.prototype.theme = function(template, element, variables, preproce
 
 
 /**
- * Initializes controller functions
+ * Initializes view controller module objects
  */
-var initViewController = function () {
+var initBlueprint = function () {
 	var controllers = {};
 	// loop through the DOM and find init elements
 	$('.js-init').each(function(index, element) {

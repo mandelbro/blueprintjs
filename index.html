@@ -11,13 +11,23 @@
   <script src="js/controllers/applicationViewController.js" type="text/javascript"></script>
   <!-- init the view controller blueprint -->
   <script type="text/javascript">
-  	$(document).ready(initViewController);
+  	$(document).ready(initBlueprint);
   </script>
 
 </head>
 <body>
+	<!-- to include templated content, just add an empty element with the id of
+		 - your view controller module and the class of js-init, it will get picked
+		 - up by the initBlueprint function and enable the custom module functionality
+		 -->
 
-	<span id="application" class="js-init"></span>
+	<span id="application" class="js-init">
+		<!-- optionally, you may include an element that contains JSON, allowing you
+			 - to easily transfer data from a server language like PHP to your view
+			 - controller modules
+			 -->
+		<span class="json" style="display:none;">{"foo":"bar"}</span>
+	</span>
 	<span id="header" class="js-init"></span>
 	<span id="footer" class="js-init"></span>
 

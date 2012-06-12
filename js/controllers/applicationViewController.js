@@ -27,6 +27,9 @@ function applicationViewController(parentobj, initElement) {
 		$('body').addClass('normalscreen');
 	}
 
+	// finally, let's console log the JSON object we got from the DOM
+	console.log(this.info);
+
 }
 
 /*
