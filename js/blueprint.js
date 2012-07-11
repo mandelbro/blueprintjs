@@ -74,7 +74,7 @@ var Blueprint = (function( $ )  {
 			};
 			// provide a hook to register more elements
 			if(typeof this.hookElements == 'function') {
-				this.elements = this.hookElements(this.elements); // this method should return an object of jQuery elements
+				$.extend(this.elements, this.hookElements(initElement)); // this method should return an object of jQuery elements
 			}
 
 			// define the template object
@@ -88,13 +88,13 @@ var Blueprint = (function( $ )  {
 			// define the model object
 			var jsonElement = initElement.find('.json:first');
 			this.model = {
-				json : jsonElement.length ? jsonElement : false,
+				json : jsonElement.length ? jsonElement.remove() : false,
 				data : jsonElement.length ? $.parseJSON(jsonElement.text()) : {}
 			};
 
 			// provide a hook for adding model functions to the model object
 			if(typeof this.hookModel == 'function') {
-				this.model = this.hookModel(this.model); // this will give you a place to implement model functions and properties
+				$.extend(this.model, this.hookModel()); // this will give you a place to implement model functions and properties
 			}
 		},
 
@@ -113,7 +113,6 @@ var Blueprint = (function( $ )  {
 			var output, method;
 			// normalize inputs
 			variables = !variables ? {} : variables;
-			element = !element ? this.elements.main : element;
 			// run the preprocess method if provided
 			if(typeof this['templatePreprocess_'+ template] == 'function') {
 				this['templatePreprocess_'+ template](variables);
@@ -121,14 +120,24 @@ var Blueprint = (function( $ )  {
 			// make the update type configurable from the variables array and preprocess function
 			method = variables.updateMethod ? variables.updateMethod : 'append';
 
-			try {
-				// update the target element with content back from the template function
-				element[method](this.templates[template](variables));
-				// rescan the dom for any new triggers
-				this.scan(element);
+      if(element) {
+        try {
+          var templateBuffer = this.templates[template](variables);
+          // update the target element with content back from the template function
+          element[method](templateBuffer);
+          // rescan the dom for any new triggers
+          this.scan(element);
+          // trigger the custom event
+          $('body').trigger('blueprintThemeInserted', [template]);
+          // return the template
+          return templateBuffer;
+        }
+        catch(e) {
+          console.log(e);
+        }
 			}
-			catch(e) {
-				console.log(e);
+			else {
+			  return this.templates[template](variables);
 			}
 
 		},
