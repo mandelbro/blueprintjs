@@ -17,12 +17,30 @@ Each view controller object that extends this object inherits three
 important methods: init, build, and theme
 
 ## init
-   parses any JSON from the first element with the class .json,
-   this allows you to import a hashmap of data from the server.
-   The init function invokes the build method
+The init method gives your view controller a public facing method
+to initialize a view controller. It enhances this process with the
+following features:
+- Parses JSON from the first element with the class .json into a
+property viewController.data
+- The init function invokes the build method, which allows you to
+register elements, specify templates, and setup event listeners
+
+
 ## build
-   Setup up two important objects, elements and templates, which
-   are used to manage dynamic content in the theme method
+The build method gets called automatically when the viewController is
+initialized and is the ideal place for:
+
+- registering elements of the module
+- specifying re-usable templates (accessible later with theme)
+- and building out your event listeners.
+
 ## theme
-   A theming engine invoked in by custom view controller modules
-   to include html content
+What view controller would be complete without an easy way of adding
+dynamically created content to the DOM? The theme function makes use
+of a flexible templating engine that allows you to use any kind of theming
+model you want, from MustacheJS to simple functions that return jQuery
+elements.
+
+The secret weapon of the theme function is that it makes available a
+preprocessing layer, which allows you keep controller code out of your
+view functions, and basically organize the shit out of your templates.
