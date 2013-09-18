@@ -1,33 +1,4 @@
 
-/**
- * Blueprint View Controller
- * BlueprintJS allows you to create dynamic view controller modules
- * which can do anything from create a simple website template without
- * the need for a server language, to full fledged application feature
- * modules that are well organized and do a decent enough job of
- * following the MVC structure.
- *
- * This is just something I've been using for a while, I'm looking into
- * MustacheJS and BackboneJS as they are most likely better options for
- * what BlueprintJS does...
- *
- * On to the good part!
- *
- * Each view controller object that extends this object inherits three
- * important methods: init, build, and theme
- *
- * @method init
- *		parses any JSON from the first element with the class .json,
- * 		this allows you to import a hashmap of data from a server
- *		language like PHP. The init function invokes the build method
- * @method build
- *		Setups up two important objects, elements and templates, which
- *		are used to manage dynamic content in the theme method
- * @method theme
- *		A theming engine invoked in by custom view controller modules
- *		to include html content
- */
-
 var Blueprint = (function( $ )  {
 
 	var Blueprint = function( module, initElement ) {
