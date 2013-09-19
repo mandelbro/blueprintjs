@@ -54,6 +54,5 @@ of a flexible templating engine that allows you to use any kind of theming
 model you want, from MustacheJS to simple functions that return jQuery
 elements.
 
-The secret weapon of the theme function is that it makes available a
-preprocessing layer, which allows you keep controller code out of your
-view functions, and basically organize the shit out of your templates.
+## Boilerplate
+[See this gist](https://gist.github.com/mandelbro/6626234) for a Blueprint based view controller boilerplate that extends Blueprint, based on the Module pattern

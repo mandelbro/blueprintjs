@@ -46,28 +46,28 @@ var Blueprint = (function( $, window, document, undefined )  {
        *    - insertMethod: append | prepend | insertAfter | insertBefore
        *    - preprocess: a function to run before the theme function is run, receives variables as an argument
        *    - postprocess: a function to run after the theme function is run but before it is inserted into the DOM, receives the theme output as an argument
-       *    - afterInsert: a function to run after the element is inserted onto the DOM, receives the offset element as an argument
+       *    - afterInsert: a function to run after the element is inserted onto the DOM, receives the theme output as an argument
        */
       theme : function( template, variables, options ) {
-        var buffer;
+        var self = this,
+          buffer;
 
         // if the specfied template isn't available bail
         if(typeof this.templates[template] != 'function') return;
 
         // normalize inputs
-        options = $.extend(options, {
+        options = $.extend({
           'insertMethod'  : 'append',
           'offsetElement' : {},
           'preprocess'    : null,
           'postprocess'   : null,
           'afterInsert'   : null
-        });
+        }, options);
 
         variables = !variables ? {} : variables;
-
         // run the preprocess method if provided
         if(typeof options.preprocess == 'function') {
-          options.preprocess(variables);
+          options.preprocess.apply(this, [variables]);
         }
 
         // run the theme function
@@ -75,18 +75,20 @@ var Blueprint = (function( $, window, document, undefined )  {
 
         // run the preprocess method if provided
         if(typeof options.postprocess == 'function') {
-          options.postprocess(buffer);
+          options.postprocess.apply(this, [buffer]);
         }
 
-        // if no element is specified, just return the buffer
-        if(!element.length) return buffer;
+        // if no offset element is specified, just return the buffer
+        if(!options.offsetElement.length) return buffer;
 
-        // update the target element with content back from the template function
-        element[options.insertMethod](buffer);
+        // update the offset element with content back from the template function
+        options.offsetElement[options.insertMethod](buffer);
 
         // run the preprocess method if provided
         if(typeof options.afterInsert == 'function') {
-          options.afterInsert(element);
+          window.setTimeout(function() {
+            options.afterInsert.apply(self, [buffer]);
+          }, 10);
         }
 
         // return the buffer
