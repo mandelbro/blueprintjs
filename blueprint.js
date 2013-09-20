@@ -8,34 +8,30 @@ var Blueprint = (function( $, window, document, undefined )  {
   // Blueprint internal functions
   Blueprint.fn = Blueprint.prototype = {
     constructor : Blueprint,
-    init : function( viewController, initElement ) {
+    init : function( viewController, initElements ) {
 
       // extend the viewController, do a deep copy so each vc is unique
       var viewController = $.extend(true, {}, this.fn, viewController);
 
-      // get a new copy of blueprint for this element
-      // var blueprint = new Blueprint();
-      // don't proceed without an init elemnet
-      if(!initElement || !initElement.length) return;
+      // prepare the initElements map
+      if(initElements instanceof $ || $.zepto.isZ(initElements)) { // is a single jQuery wrapped element
+        initElements = { 'main' : initElements };
+      }
 
       // define the elements object
-      viewController.elements = {
-        main : initElement // important we remove blueprint-js here otherwise we'll get an infinite loop
-      };
+      viewController.elements = initElements;
 
       // define the template object
       viewController.templates = {};
 
       // define the model object
-      var jsonElement = initElement.find('.json');
-      viewController.model = {
-        json : jsonElement.length ? jsonElement.remove() : false,
-        data : jsonElement.length ? $.parseJSON(jsonElement.text()) : {}
-      };
+      viewController.model = {};
+      // scan the init element for data
+      viewController.dataScan(initElements);
 
       // run build
       if( typeof viewController.construct == 'function') viewController.construct();
-      console.log(viewController);
+
       return viewController;
     }
   };
@@ -103,6 +99,56 @@ var Blueprint = (function( $, window, document, undefined )  {
 
     // return the buffer
     return buffer;
+
+  };
+
+  /**
+   * Blueprint.dataScan
+   * Finds an element of class .json with a well formatted JSON string and stores it into
+   * the view controller's model
+   *
+   * Data elements with an ID will be stored in the model keyed by that ID, otherwise they
+   * will be merged into under the 'data' key.
+   *
+   * @param $element
+   *    An element to scan for data
+   */
+  Blueprint.fn.dataScan = function( $elements ) {
+    $elements.main.find('.json').each(function() {
+      var $this = $(this),
+          key = $this.attr('id') || 'data';
+      viewController.model[ key ] = $.extend(viewController.model[ key ], $.parseJSON($this.text().remove()));
+    });
+  };
+
+  /**
+   * Blueprint.data
+   * Finds an element of class .json with a well formatted JSON string and stores it into
+   * the view controller's model
+   *
+   * Data elements with an ID will be stored in the model keyed by that ID, otherwise they
+   * will be merged into under the 'data' key.
+   *
+   * @param $element
+   *    An element to scan for data
+   */
+  Blueprint.fn.data = function( key, value ) {
+    // key defaults to data
+    key = key || 'data';
+
+    // if key is an object, save the object to the model
+    if(typeof key == 'object') {
+      $.extend(this.model, key);
+      return this;
+    }
+
+    // if a value is present, set the key to that value in the model
+    if(typeof value != 'undefined') {
+      this.model[key] = value;
+      return this;
+    }
+
+    return this.model[key];
 
   };
 
