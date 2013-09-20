@@ -1,7 +1,18 @@
 
-# Blueprint View Controller Builder
+# Blueprint View Controller Bootstrap
 
 BlueprintJS allows you to create dynamic view controller modules.
+
+Initializing a blueprint object is as simple as
+`
+Blueprint(function() {
+  return {
+    'construct' : function() {
+      // start building
+    }
+  }
+}, $('#element'));
+`
 
 Borrowing from the conventions of MVC frameworks, view controllers
 are a flexible and dynamic way of managing modular features within
@@ -40,7 +51,7 @@ register elements, specify templates, and setup event listeners
 
 
 ### this.construct()
-The build method gets called automatically when the viewController is
+The construct method gets called automatically when the viewController is
 initialized and is the ideal place for:
 
 - registering elements of the module
@@ -54,5 +65,18 @@ of a flexible templating engine that allows you to use any kind of theming
 model you want, from MustacheJS to simple functions that return jQuery
 elements.
 
+## this.data( key[string] | key[object] | key[string], value[mixed])
+The data method allows you to store and retrieve data from the model. You can store
+data by including an element of class .json with a well formatted JSON string
+under any of the initElements
+
 ## Boilerplate
 [See this gist](https://gist.github.com/mandelbro/6626234) for a Blueprint based view controller boilerplate that extends Blueprint, based on the Module pattern
+
+## Extensions
+You can extend Blueprint with a syntax identical to jQuery and Zepto plugins
+<code>
+Blueprint.fn.plugin = function() {
+  // do something
+};
+</code>
