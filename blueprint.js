@@ -10,8 +10,8 @@ var Blueprint = (function( $, window, document, undefined )  {
     constructor : Blueprint,
     init : function( viewController, initElement ) {
 
-      // extend the viewController
-      var output = $.extend(this.fn, viewController);
+      // extend the viewController, do a deep copy so each vc is unique
+      var viewController = $.extend(true, {}, this.fn, viewController);
 
       // get a new copy of blueprint for this element
       // var blueprint = new Blueprint();
@@ -19,23 +19,24 @@ var Blueprint = (function( $, window, document, undefined )  {
       if(!initElement || !initElement.length) return;
 
       // define the elements object
-      output.elements = {
+      viewController.elements = {
         main : initElement // important we remove blueprint-js here otherwise we'll get an infinite loop
       };
 
       // define the template object
-      output.templates = {};
+      viewController.templates = {};
 
       // define the model object
       var jsonElement = initElement.find('.json');
-      output.model = {
+      viewController.model = {
         json : jsonElement.length ? jsonElement.remove() : false,
         data : jsonElement.length ? $.parseJSON(jsonElement.text()) : {}
       };
 
       // run build
-      if( typeof output.construct == 'function') output.construct();
-      return output;
+      if( typeof viewController.construct == 'function') viewController.construct();
+      console.log(viewController);
+      return viewController;
     }
   };
 
