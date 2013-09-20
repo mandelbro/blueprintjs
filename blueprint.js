@@ -27,7 +27,7 @@ var Blueprint = (function( $, window, document, undefined )  {
       // define the model object
       viewController.model = {};
       // scan the init element for data
-      viewController.dataScan(initElements);
+      viewController.dataScan(initElements.main);
 
       // run build
       if( typeof viewController.construct == 'function') viewController.construct();
@@ -114,6 +114,7 @@ var Blueprint = (function( $, window, document, undefined )  {
    *    An element to scan for data
    */
   Blueprint.fn.dataScan = function( $elements ) {
+    if(!$elements) return;
     $elements.main.find('.json').each(function() {
       var $this = $(this),
           key = $this.attr('id') || 'data';
