@@ -12,7 +12,7 @@ var Blueprint = (function( $, window, document, undefined )  {
 
       // extend the viewController, do a deep copy so each vc is unique
       var viewController = $.extend(true, {}, this.fn, viewController);
-
+      
       // prepare the initElements map
       if(initElements instanceof $ || $.zepto.isZ(initElements)) { // is a single jQuery wrapped element
         initElements = { 'main' : initElements };
@@ -113,12 +113,15 @@ var Blueprint = (function( $, window, document, undefined )  {
    * @param $element
    *    An element to scan for data
    */
-  Blueprint.fn.dataScan = function( $elements ) {
-    if(!$elements) return;
-    $elements.main.find('.json').each(function() {
+  Blueprint.fn.dataScan = function( $element ) {
+    var self = this;
+    if(!$element) return;
+    $element.find('.json').each(function() {
       var $this = $(this),
           key = $this.attr('id') || 'data';
-      viewController.model[ key ] = $.extend(viewController.model[ key ], $.parseJSON($this.text().remove()));
+
+      self.model[ key ] = $.extend((self.model[ key ] || {}), $.parseJSON($this.text()));
+      $this.remove();
     });
   };
 
