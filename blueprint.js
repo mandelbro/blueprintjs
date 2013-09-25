@@ -116,7 +116,7 @@ var Blueprint = (function( $, window, document, undefined )  {
   Blueprint.fn.dataScan = function( $element ) {
     var self = this;
     if(!$element) return;
-    $element.find('.json').each(function() {
+    $element.children('.json').each(function() {
       var $this = $(this),
           key = $this.attr('id') || 'data';
 
