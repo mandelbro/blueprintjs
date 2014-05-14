@@ -1,4 +1,4 @@
-var Blueprint = (function( $, window, document, undefined )  {
+var Blueprint = (function( $, window, undefined )  {
 
   var Blueprint = function( viewController, initElement ) {
       // The blueprint prototype will decorate the extending view controller with it's functions
@@ -158,4 +158,4 @@ var Blueprint = (function( $, window, document, undefined )  {
 
   return Blueprint;
 
-})( typeof Zepto == 'undefined' ? jQuery : Zepto, window, document );
+})( (window.Zepto || window.jQuery), this );
